@@ -1,5 +1,3 @@
-#include <QFile>
-
 #include <fstream>
 #include <memory>
 
@@ -62,12 +60,12 @@ int main(int argc,
 	auto handle = transferManager->DownloadFile(bucket, key, offset, contentLength, createStreamFn);
 	// Wait until the file is created
 	condition.wait(locker);
-	cout << "file created: " << handle->GetStatus() << " " << QFile(fileName.c_str()).size() * 100 / contentLength << " %" << endl;
+	cout << "file created: " << handle->GetStatus() << " " << fs->tellg() * 100 / contentLength << " %" << endl;
 	handle->Cancel();
 
-	cout << "file canceled: " << handle->GetStatus() << " " << QFile(fileName.c_str()).size() * 100 / contentLength << " %" << endl;
+	cout << "file canceled: " << handle->GetStatus() << " " << fs->tellg() * 100 / contentLength << " %" << endl;
 	handle->WaitUntilFinished();
-	cout << "file canceled: " << handle->GetStatus() << " " << QFile(fileName.c_str()).size() * 100 / contentLength << " %" << endl;
+	cout << "file canceled: " << handle->GetStatus() << " " << fs->tellg() * 100 / contentLength << " %" << endl;
 
 	ShutdownAPI(options);
 	return 0;
